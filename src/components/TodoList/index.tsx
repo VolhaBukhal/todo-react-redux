@@ -1,19 +1,30 @@
-import { TodoItem } from '@components/TodoItem'
-import { ITask } from '@types/types'
+import { TodoItem } from '@/components/TodoItem'
+import { ITask } from '@/types/types'
 
-const tasks = [
-  { id: 1, text: 'learn react', complete: false },
-  { id: 2, text: 'learn redux', complete: false },
-  { id: 3, text: 'learn reduxToolkit', complete: false },
-  { id: 4, text: 'learn redux-persist', complete: false },
-]
+type TodoListProps = {
+  tasks: ITask[]
+  handleDeleteTask: (id: string) => void
+  handleEditTask: (id: string) => void
+}
 
-export const TodoList = () => {
+export const TodoList = ({
+  tasks,
+  handleDeleteTask,
+  handleEditTask,
+}: TodoListProps) => {
   return (
     <>
-      This is to do list
+      This is todo list
       <ul>
-        {tasks && tasks.map((task) => <TodoItem key={task.id} task={task} />)}
+        {tasks &&
+          tasks.map((task) => (
+            <TodoItem
+              handleDeleteTask={handleDeleteTask}
+              handleEditTask={handleEditTask}
+              key={task.id}
+              task={task}
+            />
+          ))}
       </ul>
     </>
   )
