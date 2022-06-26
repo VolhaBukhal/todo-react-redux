@@ -2,35 +2,29 @@ import { useState, useEffect, ChangeEvent, MouseEvent } from 'react'
 import { v4 as uuid } from 'uuid'
 
 import { ITask } from '@/types/types'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux.hooks'
+import { addTask, updateTask } from '@/store/todosSlice'
 
 enum ButtonTypes {
   ADD = 'Add',
   SAVE = 'Save',
 }
 
-type TodoInputProps = {
-  handleAddTask: (task: ITask) => void
-  handleUpdateTask: (text: string) => void
-  currentEditingTaskDescr: string
-}
-
-export const TodoInput = ({
-  handleAddTask,
-  handleUpdateTask,
-  currentEditingTaskDescr,
-}: TodoInputProps) => {
+export const TodoInput = () => {
   const [task, setTask] = useState('')
   const [isEdit, setIsEdit] = useState(false)
+  const { curEditingTaskDescr } = useAppSelector((state) => state.todos)
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    if (currentEditingTaskDescr) {
-      setTask(currentEditingTaskDescr)
+    if (curEditingTaskDescr) {
+      setTask(curEditingTaskDescr)
       setIsEdit(true)
     } else {
       setTask('')
       setIsEdit(false)
     }
-  }, [currentEditingTaskDescr])
+  }, [curEditingTaskDescr])
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTask(event.currentTarget.value)
@@ -46,14 +40,14 @@ export const TodoInput = ({
           text: task,
           completed: false,
         }
-        handleAddTask(newTask)
+        dispatch(addTask(newTask))
         setTask('')
         setIsEdit(false)
       } else {
         alert('Need to add a description first!')
       }
     } else {
-      handleUpdateTask(task)
+      dispatch(updateTask(task))
       setTask('')
       setIsEdit(false)
     }
