@@ -42,6 +42,8 @@ export const todosSlice = createSlice({
         return task
       })
       state.tasks = updatedTasks
+      state.curEditingTaskDescr = ''
+      state.curEditingTaskId = ''
     },
     toggleComplete: (state, action: PayloadAction<string>) => {
       const updatedTasks = state.tasks.map((task) => {

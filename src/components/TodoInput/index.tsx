@@ -1,5 +1,6 @@
-import { useState, useEffect, ChangeEvent, MouseEvent } from 'react'
+import { useState, useEffect } from 'react'
 import { v4 as uuid } from 'uuid'
+import { Formik, Field, Form, ErrorMessage, FormikErrors } from 'formik'
 
 import { ITask } from '@/types/types'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux.hooks'
@@ -10,61 +11,75 @@ enum ButtonTypes {
   SAVE = 'Save',
 }
 
+interface FormValues {
+  text: string
+}
+
 export const TodoInput = () => {
-  const [task, setTask] = useState('')
   const [isEdit, setIsEdit] = useState(false)
   const { curEditingTaskDescr } = useAppSelector((state) => state.todos)
+  const [formValue, setFormValue] = useState({ text: '' })
+
+  const initialValue: FormValues = { text: '' }
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     if (curEditingTaskDescr) {
-      setTask(curEditingTaskDescr)
       setIsEdit(true)
+      setFormValue({ text: curEditingTaskDescr })
     } else {
-      setTask('')
       setIsEdit(false)
+      setFormValue({ text: curEditingTaskDescr })
     }
   }, [curEditingTaskDescr])
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setTask(event.currentTarget.value)
-  }
+  const validate = (values: FormValues) => {
+    const errors: FormikErrors<FormValues> = {}
 
-  const handleTask = (event: MouseEvent<HTMLButtonElement>) => {
-    const currentBtn = event.currentTarget.textContent
-
-    if (currentBtn === ButtonTypes.ADD) {
-      if (task) {
-        const newTask: ITask = {
-          id: uuid(),
-          text: task,
-          completed: false,
-        }
-        dispatch(addTask(newTask))
-        setTask('')
-        setIsEdit(false)
-      } else {
-        alert('Need to add a description first!')
-      }
-    } else {
-      dispatch(updateTask(task))
-      setTask('')
-      setIsEdit(false)
+    if (!values.text) {
+      errors.text = 'Required!'
+    } else if (values.text.length < 4) {
+      errors.text = 'Min length 4 symbols'
     }
+    return errors
   }
+
   return (
-    <div className="inputBar" style={{ display: 'flex' }}>
-      <div className="inputTask">
-        <input
-          type="text"
-          value={task}
-          onChange={handleChange}
-          placeholder="Add a task..."
-        />
-      </div>
-      <button onClick={handleTask}>
-        {isEdit ? ButtonTypes.SAVE : ButtonTypes.ADD}
-      </button>
-    </div>
+    <>
+      <Formik
+        initialValues={formValue.text ? formValue : initialValue}
+        enableReinitialize
+        validate={validate}
+        onSubmit={(values, actions) => {
+          actions.setSubmitting(false)
+          if (!isEdit) {
+            dispatch(
+              addTask({ id: uuid(), text: values.text, completed: false }),
+            )
+            setIsEdit(false)
+          } else {
+            dispatch(updateTask(values.text))
+            setIsEdit(false)
+          }
+          actions.resetForm()
+        }}
+      >
+        <Form className="inputBar" style={{ display: 'flex' }}>
+          <Field
+            className="inputTask"
+            type="text"
+            id="text"
+            name="text"
+            placeholder="Add a task..."
+          />
+          <div style={{ color: 'red' }}>
+            <ErrorMessage name="text" component="div" />
+          </div>
+          <button type="submit">
+            {isEdit ? ButtonTypes.SAVE : ButtonTypes.ADD}
+          </button>
+        </Form>
+      </Formik>
+    </>
   )
 }
