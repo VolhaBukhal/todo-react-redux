@@ -1,11 +1,8 @@
 import { TodoList } from '@/components/TodoList'
 import { TodoInput } from '@/components/TodoInput'
-
-import { useAppSelector } from '@/hooks/redux.hooks'
+import { TodoFilters } from '@/components/TodoFilters'
 
 export const App = () => {
-  const { tasks } = useAppSelector((state) => state.todos)
-
   return (
     <div
       className="container"
@@ -17,7 +14,8 @@ export const App = () => {
     >
       To do list
       <TodoInput />
-      <TodoList tasks={tasks} />
+      <TodoFilters />
+      <TodoList />
     </div>
   )
 }

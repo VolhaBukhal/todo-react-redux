@@ -1,17 +1,38 @@
 import { TodoItem } from '@/components/TodoItem'
-import { ITask } from '@/types/types'
+import { createSelector } from 'reselect'
 
-type TodoListProps = {
-  tasks: ITask[]
-}
+import { useAppSelector } from '@/hooks/redux.hooks'
+import { Filters, ITask } from '@/types/types'
+import { RootState } from '@/store/store'
 
-export const TodoList = ({ tasks }: TodoListProps) => {
+export const TodoList = () => {
+  const selectTasks = (state: RootState) => state.todos.tasks
+  const selectFilter = (state: RootState) => state.filters.filter
+
+  const selectFilteredTasks = createSelector(
+    selectTasks,
+    selectFilter,
+    (tasks, filter) => {
+      switch (filter) {
+        case Filters.ACTIVE: {
+          return tasks.filter((task: ITask) => !task.completed)
+        }
+
+        case Filters.DONE: {
+          return tasks.filter((task: ITask) => task.completed)
+        }
+
+        default:
+          return tasks
+      }
+    },
+  )
+  const filteredTasks = useAppSelector(selectFilteredTasks)
+
   return (
-    <>
-      This is todo list
-      <ul>
-        {tasks && tasks.map((task) => <TodoItem key={task.id} task={task} />)}
-      </ul>
-    </>
+    <ul>
+      {filteredTasks &&
+        filteredTasks.map((task) => <TodoItem key={task.id} task={task} />)}
+    </ul>
   )
 }
