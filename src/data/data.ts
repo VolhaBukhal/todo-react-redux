@@ -1,7 +1,7 @@
 export const tasksData = [
   { id: '1', text: 'learn reduxToolkit', completed: true },
   { id: '2', text: 'add Formik', completed: true },
-  { id: '3', text: 'ass Redux-suga for delay of submit', completed: false },
+  { id: '3', text: 'ass Redux-suga for delay of delete task', completed: true },
   {
     id: '4',
     text: 'ass Redux-persist for synchronize data with LS',

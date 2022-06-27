@@ -1,4 +1,5 @@
 {
+  "homepage": "http://VolhaBukhal.github.io/todo-react-redux",
   "name": "todo-react-redux",
   "version": "0.1.0",
   "private": true,
@@ -28,6 +29,8 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d build",
     "start": "craco start",
     "build": "craco build",
     "test": "react-scripts test",
@@ -60,10 +63,12 @@
     "@typescript-eslint/parser": "^5.29.0",
     "eslint": "^8.18.0",
     "eslint-config-prettier": "^8.5.0",
+    "eslint-loader": "^4.0.2",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
+    "gh-pages": "^4.0.0",
     "prettier": "^2.7.1"
   }
 }
