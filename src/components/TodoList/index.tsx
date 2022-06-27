@@ -5,6 +5,8 @@ import { useAppSelector } from '@/hooks/redux.hooks'
 import { Filters, ITask } from '@/types/types'
 import { RootState } from '@/store/store'
 
+import { StyledList } from './components'
+
 export const TodoList = () => {
   const selectTasks = (state: RootState) => state.todos.tasks
   const selectFilter = (state: RootState) => state.filters.filter
@@ -30,9 +32,9 @@ export const TodoList = () => {
   const filteredTasks = useAppSelector(selectFilteredTasks)
 
   return (
-    <ul>
+    <StyledList>
       {filteredTasks &&
         filteredTasks.map((task) => <TodoItem key={task.id} task={task} />)}
-    </ul>
+    </StyledList>
   )
 }

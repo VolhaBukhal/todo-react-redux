@@ -1,10 +1,17 @@
 import { useState, useEffect } from 'react'
 import { v4 as uuid } from 'uuid'
-import { Formik, Field, Form, ErrorMessage, FormikErrors } from 'formik'
+import { Formik, ErrorMessage, FormikErrors } from 'formik'
 
-import { ITask } from '@/types/types'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux.hooks'
 import { addTask, updateTask } from '@/store/todosSlice'
+
+import {
+  ToolBar,
+  StyledForm,
+  StyledInputItem,
+  StyledField,
+  Error,
+} from './components'
 
 enum ButtonTypes {
   ADD = 'Add',
@@ -45,7 +52,7 @@ export const TodoInput = () => {
   }
 
   return (
-    <>
+    <ToolBar>
       <Formik
         initialValues={formValue.text ? formValue : initialValue}
         enableReinitialize
@@ -64,22 +71,24 @@ export const TodoInput = () => {
           actions.resetForm()
         }}
       >
-        <Form className="inputBar" style={{ display: 'flex' }}>
-          <Field
-            className="inputTask"
-            type="text"
-            id="text"
-            name="text"
-            placeholder="Add a task..."
-          />
-          <div style={{ color: 'red' }}>
-            <ErrorMessage name="text" component="div" />
-          </div>
-          <button type="submit">
-            {isEdit ? ButtonTypes.SAVE : ButtonTypes.ADD}
-          </button>
-        </Form>
+        {({ errors, touched }) => (
+          <StyledForm className="inputBar" style={{ display: 'flex' }}>
+            <StyledInputItem>
+              <StyledField
+                isShown={!!errors.text && !!touched.text}
+                type="search"
+                id="text"
+                name="text"
+                placeholder="Add a task..."
+              />
+              <ErrorMessage name="text" component={Error} />
+            </StyledInputItem>
+            <button type="submit">
+              {isEdit ? ButtonTypes.SAVE : ButtonTypes.ADD}
+            </button>
+          </StyledForm>
+        )}
       </Formik>
-    </>
+    </ToolBar>
   )
 }

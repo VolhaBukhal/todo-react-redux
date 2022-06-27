@@ -4,6 +4,8 @@ import { ITask } from '@/types/types'
 import { useAppDispatch } from '@/hooks/redux.hooks'
 import { deleteTask, editTask, toggleComplete } from '@/store/todosSlice'
 
+import { TaskItem, TaskComplete, TaskBody, TaskControls } from './components'
+
 type TodoItemProps = {
   task: ITask
 }
@@ -25,15 +27,23 @@ export const TodoItem = ({ task }: TodoItemProps) => {
   }
 
   return (
-    <div className="taskItem" style={{ display: 'flex' }}>
-      <div className="taskComplete">
-        <input onChange={handleChange} type="checkbox" checked={isCompleted} />
-      </div>
-      <div className="taskBody">{task.text}</div>
-      <div className="taskControls">
+    <TaskItem>
+      <TaskComplete>
+        <label htmlFor="complete">
+          <input
+            onChange={handleChange}
+            type="checkbox"
+            name="complete"
+            checked={isCompleted}
+          />
+          <span></span>
+        </label>
+      </TaskComplete>
+      <TaskBody>{task.text}</TaskBody>
+      <TaskControls>
         <button onClick={handleEdit}>Edit</button>
         <button onClick={handleDelete}>Delete</button>
-      </div>
-    </div>
+      </TaskControls>
+    </TaskItem>
   )
 }

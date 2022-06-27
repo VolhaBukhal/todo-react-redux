@@ -2,20 +2,15 @@ import { TodoList } from '@/components/TodoList'
 import { TodoInput } from '@/components/TodoInput'
 import { TodoFilters } from '@/components/TodoFilters'
 
+import { StyledApp, StyledHeading } from './components'
+
 export const App = () => {
   return (
-    <div
-      className="container"
-      style={{
-        width: '600px',
-        margin: '20px auto',
-        backgroundColor: 'lightseagreen',
-      }}
-    >
-      To do list
+    <StyledApp>
+      <StyledHeading>TODO list</StyledHeading>
       <TodoInput />
       <TodoFilters />
       <TodoList />
-    </div>
+    </StyledApp>
   )
 }

@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { ITask } from '@/types/types'
 import { tasksData } from '@/data/data'
-import { stat } from 'fs'
 
 interface TodosState {
   tasks: ITask[]
