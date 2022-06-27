@@ -71,23 +71,20 @@ export const TodoInput = () => {
           actions.resetForm()
         }}
       >
-        {({ errors, touched }) => (
-          <StyledForm className="inputBar" style={{ display: 'flex' }}>
-            <StyledInputItem>
-              <StyledField
-                isShown={!!errors.text && !!touched.text}
-                type="search"
-                id="text"
-                name="text"
-                placeholder="Add a task..."
-              />
-              <ErrorMessage name="text" component={Error} />
-            </StyledInputItem>
-            <button type="submit">
-              {isEdit ? ButtonTypes.SAVE : ButtonTypes.ADD}
-            </button>
-          </StyledForm>
-        )}
+        <StyledForm className="inputBar" style={{ display: 'flex' }}>
+          <StyledInputItem>
+            <StyledField
+              type="search"
+              id="text"
+              name="text"
+              placeholder="Add a task..."
+            />
+            <ErrorMessage name="text" component={Error} />
+          </StyledInputItem>
+          <button type="submit">
+            {isEdit ? ButtonTypes.SAVE : ButtonTypes.ADD}
+          </button>
+        </StyledForm>
       </Formik>
     </ToolBar>
   )

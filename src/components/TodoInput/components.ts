@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Form, Field } from 'formik'
 
 type ErrorMessageProps = {
-  isShown: boolean
+  active?: boolean
 }
 
 export const ToolBar = styled.div`
@@ -27,7 +27,8 @@ export const StyledField = styled(Field)<ErrorMessageProps>`
     ${({ theme }) => theme.spaces[3]}px;
   font-size: ${({ theme }) => theme.fontSizes[3]}px;
   color: ${({ theme }) => theme.colors.secondary};
-  border-color: ${(props) => (props.isShown ? props.theme.colors.error : '')};
+  /* border-color: ${(props) =>
+    props.active ? props.theme.colors.error : 'none'}; */
   &::-webkit-search-cancel-button:hover {
     cursor: pointer;
   }
