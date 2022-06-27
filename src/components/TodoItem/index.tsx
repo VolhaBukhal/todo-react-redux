@@ -2,13 +2,14 @@ import { useState } from 'react'
 
 import { ITask } from '@/types/types'
 import { useAppDispatch } from '@/hooks/redux.hooks'
-import { deleteTask, editTask, toggleComplete } from '@/store/todosSlice'
+import { editTask, toggleComplete } from '@/store/todosSlice'
 
 import { TaskItem, TaskComplete, TaskBody, TaskControls } from './components'
 
 type TodoItemProps = {
   task: ITask
 }
+
 export const TodoItem = ({ task }: TodoItemProps) => {
   const [isCompleted, setIsCompleted] = useState(task.completed)
   const dispatch = useAppDispatch()
@@ -19,7 +20,8 @@ export const TodoItem = ({ task }: TodoItemProps) => {
   }
 
   const handleDelete = () => {
-    dispatch(deleteTask(task.id))
+    // dispatch(deleteTask(task.id))
+    dispatch({ type: 'DELETE_ASYNC', payload: task.id })
   }
 
   const handleEdit = () => {

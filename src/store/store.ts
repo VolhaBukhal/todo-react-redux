@@ -10,9 +10,14 @@ import {
   REGISTER,
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
+import createSagaMiddleware from 'redux-saga'
 
 import todosReducer from '@/store/todosSlice'
 import filtersReducer from '@/store/filtersSlice'
+
+import { watchDeleteTaskAsync } from '@/sagas'
+
+const sagaMiddleware = createSagaMiddleware()
 
 const rootReducer = combineReducers({
   todos: todosReducer,
@@ -33,10 +38,12 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).concat(sagaMiddleware),
 })
 
 export const persister = persistStore(store)
+
+sagaMiddleware.run(watchDeleteTaskAsync)
 
 export type AppDispatch = typeof store.dispatch
 export type RootState = ReturnType<typeof store.getState>

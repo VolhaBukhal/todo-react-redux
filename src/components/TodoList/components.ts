@@ -19,3 +19,9 @@ export const StyledList = styled.div`
     }
   }
 `
+
+export const NoTasks = styled.p`
+  text-align: center;
+  font-size: ${({ theme }) => theme.fontSizes[4]}px;
+  color: ${({ theme }) => theme.colors.accent};
+`

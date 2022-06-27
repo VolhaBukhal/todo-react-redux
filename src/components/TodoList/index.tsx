@@ -5,7 +5,7 @@ import { useAppSelector } from '@/hooks/redux.hooks'
 import { Filters, ITask } from '@/types/types'
 import { RootState } from '@/store/store'
 
-import { StyledList } from './components'
+import { StyledList, NoTasks } from './components'
 
 export const TodoList = () => {
   const selectTasks = (state: RootState) => state.todos.tasks
@@ -33,8 +33,11 @@ export const TodoList = () => {
 
   return (
     <StyledList>
-      {filteredTasks &&
-        filteredTasks.map((task) => <TodoItem key={task.id} task={task} />)}
+      {filteredTasks.length > 0 ? (
+        filteredTasks.map((task) => <TodoItem key={task.id} task={task} />)
+      ) : (
+        <NoTasks>There is nothing to do... Please, start &#9997;</NoTasks>
+      )}
     </StyledList>
   )
 }
