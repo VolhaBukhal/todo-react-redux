@@ -5,22 +5,15 @@ import { Formik, ErrorMessage, FormikErrors } from 'formik'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux.hooks'
 import { addTask, updateTask } from '@/store/todosSlice'
 
+import { FormValues, ButtonTypes } from './types'
+
 import {
   ToolBar,
   StyledForm,
   StyledInputItem,
   StyledField,
   Error,
-} from './components'
-
-enum ButtonTypes {
-  ADD = 'Add',
-  SAVE = 'Save',
-}
-
-interface FormValues {
-  text: string
-}
+} from './styles'
 
 export const TodoInput = () => {
   const [isEdit, setIsEdit] = useState(false)

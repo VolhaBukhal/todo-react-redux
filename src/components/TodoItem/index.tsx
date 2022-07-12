@@ -1,14 +1,11 @@
 import { useState } from 'react'
 
-import { ITask } from '@/types/types'
 import { useAppDispatch } from '@/hooks/redux.hooks'
 import { editTask, toggleComplete } from '@/store/todosSlice'
 
-import { TaskItem, TaskComplete, TaskBody, TaskControls } from './components'
+import { TodoItemProps } from './types'
 
-type TodoItemProps = {
-  task: ITask
-}
+import { TaskItem, TaskComplete, TaskBody, TaskControls } from './styles'
 
 export const TodoItem = ({ task }: TodoItemProps) => {
   const [isCompleted, setIsCompleted] = useState(task.completed)

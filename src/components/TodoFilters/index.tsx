@@ -4,9 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/redux.hooks'
 import { setFilter } from '@/store/filtersSlice'
 import { Filters } from '@/types/types'
 
-import { FiltersPanel, FilterButton } from './components'
-
-const filters = ['All', 'Active', 'Done']
+import { FiltersPanel, FilterButton } from './styles'
 
 export const TodoFilters = () => {
   const dispatch = useAppDispatch()
@@ -21,7 +19,7 @@ export const TodoFilters = () => {
 
   return (
     <FiltersPanel>
-      {filters.map((btn) => (
+      {Object.values(Filters).map((btn) => (
         <FilterButton active={filter === btn} key={btn} onClick={handleClick}>
           {btn}
         </FilterButton>

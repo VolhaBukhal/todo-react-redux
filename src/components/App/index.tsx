@@ -2,7 +2,7 @@ import { TodoList } from '@/components/TodoList'
 import { TodoInput } from '@/components/TodoInput'
 import { TodoFilters } from '@/components/TodoFilters'
 
-import { StyledApp, StyledHeading } from './components'
+import { StyledApp, StyledHeading } from './styles'
 
 export const App = () => {
   return (
