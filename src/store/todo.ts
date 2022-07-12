@@ -1,9 +1,11 @@
-import { makeAutoObservable } from 'mobx'
+import { makeObservable, observable, computed } from 'mobx'
 import { makePersistable } from 'mobx-persist-store'
 
 import { tasksData } from '@/data/data'
 
 import { ITask, Filters } from '@/types/types'
+
+import { filterTodos } from '@/helpers/helpers'
 
 class Todos {
   todos: ITask[] = tasksData
@@ -12,7 +14,14 @@ class Todos {
   filter = Filters.ALL
 
   constructor() {
-    makeAutoObservable(this)
+    // makeAutoObservable(this)
+    makeObservable(this, {
+      todos: observable,
+      curEditingTaskDescr: observable,
+      curEditingTaskId: observable,
+      filter: observable,
+      filteredTodos: computed,
+    })
     makePersistable(this, {
       name: 'todoStore',
       properties: [
@@ -23,6 +32,10 @@ class Todos {
       ],
       storage: window.localStorage,
     })
+  }
+
+  get filteredTodos() {
+    return filterTodos(this.todos, this.filter)
   }
 
   addTodo(todo: ITask) {
