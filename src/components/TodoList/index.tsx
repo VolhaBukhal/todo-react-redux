@@ -1,21 +1,23 @@
+import { useMemo } from 'react'
 import { TodoItem } from '@/components/TodoItem'
+import { observer } from 'mobx-react-lite'
 
-import { useAppSelector } from '@/hooks/redux.hooks'
-
-import { selectFilteredTasks } from './selectors'
+import todoStore from '@/store/todo'
+import { filterTodos } from './helpers'
+import { ITask } from '@/types/types'
 
 import { StyledList, NoTasks } from './styles'
 
-export const TodoList = () => {
-  const filteredTasks = useAppSelector(selectFilteredTasks)
+export const TodoList = observer(() => {
+  const filteredTodos = filterTodos(todoStore.todos, todoStore.filter)
 
   return (
     <StyledList>
-      {filteredTasks.length > 0 ? (
-        filteredTasks.map((task) => <TodoItem key={task.id} task={task} />)
+      {filteredTodos.length > 0 ? (
+        filteredTodos.map((task) => <TodoItem key={task.id} task={task} />)
       ) : (
         <NoTasks>There is nothing to do... Please, start &#9997;</NoTasks>
       )}
     </StyledList>
   )
-}
+})

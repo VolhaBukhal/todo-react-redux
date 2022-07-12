@@ -1,28 +1,26 @@
 import { useState } from 'react'
+import { observer } from 'mobx-react-lite'
 
-import { useAppDispatch } from '@/hooks/redux.hooks'
-import { editTask, toggleComplete } from '@/store/todosSlice'
+import todoStore from '@/store/todo'
 
 import { TodoItemProps } from './types'
 
 import { TaskItem, TaskComplete, TaskBody, TaskControls } from './styles'
 
-export const TodoItem = ({ task }: TodoItemProps) => {
+export const TodoItem = observer(({ task }: TodoItemProps) => {
   const [isCompleted, setIsCompleted] = useState(task.completed)
-  const dispatch = useAppDispatch()
 
   const handleChange = () => {
     setIsCompleted(!isCompleted)
-    dispatch(toggleComplete(task.id))
+    todoStore.toggleComplete(task.id)
   }
 
   const handleDelete = () => {
-    // dispatch(deleteTask(task.id))
-    dispatch({ type: 'DELETE_ASYNC', payload: task.id })
+    todoStore.removeTodo(task.id)
   }
 
   const handleEdit = () => {
-    dispatch(editTask(task.id))
+    todoStore.editTask(task.id)
   }
 
   return (
@@ -45,4 +43,4 @@ export const TodoItem = ({ task }: TodoItemProps) => {
       </TaskControls>
     </TaskItem>
   )
-}
+})

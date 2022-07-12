@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import { v4 as uuid } from 'uuid'
 import { Formik, ErrorMessage, FormikErrors } from 'formik'
+import { observer } from 'mobx-react-lite'
 
-import { useAppDispatch, useAppSelector } from '@/hooks/redux.hooks'
-import { addTask, updateTask } from '@/store/todosSlice'
+import todoStore from '@/store/todo'
 
 import { FormValues, ButtonTypes } from './types'
 
@@ -15,23 +15,21 @@ import {
   Error,
 } from './styles'
 
-export const TodoInput = () => {
+export const TodoInput = observer(() => {
   const [isEdit, setIsEdit] = useState(false)
-  const { curEditingTaskDescr } = useAppSelector((state) => state.todos)
   const [formValue, setFormValue] = useState({ text: '' })
 
   const initialValue: FormValues = { text: '' }
-  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    if (curEditingTaskDescr) {
+    if (todoStore.curEditingTaskDescr) {
       setIsEdit(true)
-      setFormValue({ text: curEditingTaskDescr })
+      setFormValue({ text: todoStore.curEditingTaskDescr })
     } else {
       setIsEdit(false)
-      setFormValue({ text: curEditingTaskDescr })
+      setFormValue({ text: todoStore.curEditingTaskDescr })
     }
-  }, [curEditingTaskDescr])
+  }, [todoStore.curEditingTaskDescr])
 
   const validate = (values: FormValues) => {
     const errors: FormikErrors<FormValues> = {}
@@ -53,12 +51,15 @@ export const TodoInput = () => {
         onSubmit={(values, actions) => {
           actions.setSubmitting(false)
           if (!isEdit) {
-            dispatch(
-              addTask({ id: uuid(), text: values.text, completed: false }),
-            )
+            todoStore.addTodo({
+              id: uuid(),
+              text: values.text,
+              completed: false,
+            })
             setIsEdit(false)
           } else {
-            dispatch(updateTask(values.text))
+            console.log('updateTask')
+            todoStore.updateTask(values.text)
             setIsEdit(false)
           }
           actions.resetForm()
@@ -81,4 +82,4 @@ export const TodoInput = () => {
       </Formik>
     </ToolBar>
   )
-}
+})
