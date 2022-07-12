@@ -1,4 +1,5 @@
 import { makeAutoObservable } from 'mobx'
+import { makePersistable } from 'mobx-persist-store'
 
 import { tasksData } from '@/data/data'
 
@@ -12,6 +13,16 @@ class Todos {
 
   constructor() {
     makeAutoObservable(this)
+    makePersistable(this, {
+      name: 'todoStore',
+      properties: [
+        'todos',
+        'curEditingTaskDescr',
+        'curEditingTaskId',
+        'filter',
+      ],
+      storage: window.localStorage,
+    })
   }
 
   addTodo(todo: ITask) {

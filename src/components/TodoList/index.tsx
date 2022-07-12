@@ -1,10 +1,8 @@
-import { useMemo } from 'react'
 import { TodoItem } from '@/components/TodoItem'
 import { observer } from 'mobx-react-lite'
 
 import todoStore from '@/store/todo'
 import { filterTodos } from './helpers'
-import { ITask } from '@/types/types'
 
 import { StyledList, NoTasks } from './styles'
 
